@@ -1,0 +1,16 @@
+.venv/
+frontend/node_modules/
+frontend/dist/
+runtime/
+runtime-public/
+deliverables/
+.env
+__pycache__/
+.pytest_cache/
+*.pyc
+/docs/*
+!/docs/index.html
+!/docs/favicon.svg
+!/docs/.nojekyll
+!/docs/assets/
+!/docs/assets/**

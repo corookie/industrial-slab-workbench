@@ -1,0 +1,11 @@
+.venv
+runtime
+runtime-public
+deliverables
+.env
+.git
+frontend/node_modules
+frontend/dist
+docs/screens
+**/__pycache__
+**/.pytest_cache
