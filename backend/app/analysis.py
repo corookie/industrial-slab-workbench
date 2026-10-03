@@ -71,7 +71,8 @@ def condition_text(spec: AnalysisSpec):
 
 def plot_report(folder, work, result, spec, relation_work, model):
     with PLOT_LOCK:
-        candidates = ['/System/Library/Fonts/Supplemental/Arial Unicode.ttf',
+        candidates = [str(Path(__file__).resolve().parents[1] / 'assets/fonts/NotoSansCJKsc-Regular.otf'),
+                      '/System/Library/Fonts/Supplemental/Arial Unicode.ttf',
                       '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc']
         family = 'DejaVu Sans'
         for path in candidates:

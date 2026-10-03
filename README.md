@@ -6,8 +6,9 @@ Vue 3、ECharts、Three.js 与 Python 组成的可运行个人工程项目。网
 
 ## 在线与本地运行
 
-- 网页：部署到 GitHub Pages 的 `main/docs`，地址将在上线后填写。
-- Python 接口：部署到 Render Python Web Service，地址将在上线后填写。
+- 网页：[打开 SLAB LAB](https://corookie.github.io/industrial-slab-workbench/)，GitHub Pages 发布 `main/docs`。
+- Python 接口：[Render 健康检查](https://industrial-slab-workbench-api.onrender.com/api/health)。
+- 源码：[GitHub 仓库](https://github.com/corookie/industrial-slab-workbench)。
 - 部署步骤：[DEPLOYMENT.md](DEPLOYMENT.md)。
 
 本机直接运行：
@@ -51,3 +52,5 @@ Vue 3、ECharts、Three.js 与 Python 组成的可运行个人工程项目。网
 后端测试覆盖样本计数、关联、分析边界、复现、公开模式隔离与量化估计。前端生产构建和浏览器交互验证在 `frontend/` 运行。Render 免费实例闲置后可能休眠，运行文件是临时存储，重启后历史实验会消失；重新运行可重新生成报告。公开服务不接收生产数据，真实数据只在本机私有模式处理。
 
 本项目没有 AI 对话或通用智能体功能。三维热轧过程属于示意动画，没有空间测温数据时不会显示真实温度场。
+
+科研图件随项目附带 Noto Sans CJK SC 字体，来源为 [Noto CJK 官方仓库](https://github.com/notofonts/noto-cjk)，按 SIL Open Font License 使用；许可证见 `backend/assets/fonts/LICENSE.txt`。因此 Render 无需另装系统中文字体。

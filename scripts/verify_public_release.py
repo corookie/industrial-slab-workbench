@@ -89,7 +89,11 @@ def main() -> None:
         if len(datasets) != 1 or datasets[0].get('release', {}).get('data_origin') != 'independent_simulation':
             raise SystemExit('线上数据集不符合公开模式要求')
         try:
-            urllib.request.urlopen(urllib.request.Request(origin + '/api/uploads', data=b'', method='POST'), timeout=120)
+            boundary = 'slab-release-audit'
+            body = (f'--{boundary}\r\nContent-Disposition: form-data; name="files"; filename="audit.csv"\r\n'
+                    f'Content-Type: text/csv\r\n\r\nslab_id,steel_grade\r\nSIM-AUDIT,G01\r\n--{boundary}--\r\n').encode()
+            urllib.request.urlopen(urllib.request.Request(origin + '/api/uploads', data=body, method='POST',
+                                   headers={'Content-Type': f'multipart/form-data; boundary={boundary}'}), timeout=120)
             raise SystemExit('线上公开服务允许上传，停止发布')
         except urllib.error.HTTPError as error:
             if error.code != 403:

@@ -9,7 +9,7 @@
 - 后端：`https://industrial-slab-workbench-api.onrender.com`
 - 健康检查：`https://industrial-slab-workbench-api.onrender.com/api/health`
 
-以上地址在首次创建并完成在线检查前只是目标地址。实际状态应以文末上线验收记录为准。
+仓库、Pages 与 Render 服务已创建。实际验收状态见文末记录。
 
 ## 1. 本地发布检查
 
@@ -39,7 +39,7 @@ git push -u origin main
 
 ## 3. 创建 Render 后端
 
-在 Render 控制台选择 **New → Blueprint**，连接上面的 GitHub 仓库并采用根目录 `render.yaml`。它定义了一个免费 Python Web Service：
+在 Render 控制台选择 **New → Blueprint → Public Git Repository**，填写上面的 GitHub 仓库 URL，分支选 `main`，采用根目录 `render.yaml`，Blueprint 名称为 `industrial-slab-workbench`。当前采用公开仓库 URL，无需授予 GitHub App 额外仓库访问权限。它定义了一个免费 Python Web Service：
 
 | 配置 | 值 |
 | --- | --- |
@@ -59,7 +59,7 @@ Render 免费实例的文件系统在重启、重新部署或休眠后可能清�
 
 仓库 **Settings → Pages → Build and deployment**：选择 **Deploy from a branch**，分支 `main`，目录 `/docs`，保存。等待 Pages 发布后打开网页地址。注意 Pages 只服务 `docs/`，并不会执行后端 Python。
 
-以后修改网页：执行 `python3 scripts/export_pages.py --api-base <实际Render域名>`，审核、提交并推送 `docs/`。修改后端：提交并推送代码，Render 应自动部署；若未触发，在 Render 控制台使用 **Manual Deploy → Deploy latest commit**。
+以后修改网页：执行 `python3 scripts/export_pages.py --api-base https://industrial-slab-workbench-api.onrender.com`，审核、提交并推送 `docs/`，Pages 会自动更新。当前 Render 使用公开仓库 URL，推送代码后需要在服务页执行 **Manual Deploy → Deploy latest commit**；改动 `render.yaml` 后可在 Blueprint 页执行 **Manual sync**。若以后连接 GitHub App，才可以进一步配置自动部署。
 
 ## 5. 上线验收
 
