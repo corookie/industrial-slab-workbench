@@ -69,6 +69,10 @@ watch(()=>props.dataset?.id,()=>{
  if(props.dataset?.bounds.exit_temp){const b=props.dataset.bounds.exit_temp;controls.exit_temp=b.min<=1220&&b.max>=1180?[Math.max(b.min,1180),Math.min(b.max,1220)]:[b.min,b.max]}
  loadHistory()
 },{immediate:true})
+watch(()=>props.filters.grades.join('|'),()=>{
+ const selected=props.filters.grades
+ if(selected.length===1||selected.length>1&&!selected.includes(grade.value))grade.value=selected[0]
+})
 const options=()=>({filters:JSON.parse(JSON.stringify(props.filters)),steel_grade:grade.value,variable:variable.value,
  effect_step:Number(effectStep.value),relationship_fields:availableVariables.value.filter(k=>relationshipFields.value.includes(k)||k===variable.value),
  bins:bins.value.split(/[,，\s]+/).filter(Boolean).map(Number),error_bar:errorBar.value,

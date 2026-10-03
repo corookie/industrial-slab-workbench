@@ -66,15 +66,34 @@ Render 免费实例的文件系统在重启、重新部署或休眠后可能清�
 ```bash
 curl https://industrial-slab-workbench-api.onrender.com/api/health
 .venv/bin/python scripts/verify_public_release.py --url https://industrial-slab-workbench-api.onrender.com
+.venv/bin/python scripts/verify_online.py
 ```
 
-健康检查应显示 `mode: public_demo`、`public_data: independent_simulation`。线上 `/api/datasets` 应只有一个独立模拟数据集，10,000 条、G01—G05 五类。网页应能完成筛选、选中记录、运行一次分析、展开三维工况和下载 PNG/PDF/完整实验包。下载图件后检查中文字体与数值；Pages 的 API 请求应指向 Render HTTPS 地址，不能请求本机 `127.0.0.1`。线上上传接口应返回 403。验收结果在实际部署完成后记录。
+健康检查应显示 `mode: public_demo`、`public_data: independent_simulation`。线上 `/api/datasets` 应只有一个独立模拟数据集，10,000 条、G01—G05 五类。网页应能完成筛选、选中记录、运行一次分析、展开三维工况和下载 PNG/PDF/完整实验包。下载图件后检查中文字体与数值；Pages 的 API 请求应指向 Render HTTPS 地址，不能请求本机 `127.0.0.1`。线上上传接口应返回 403。`verify_online.py` 会实际运行一份分析、下载文件并检查重跑一致性，结果保存在被 Git 忽略的 `runtime/online-verification/`。
 
 ## 上线验收记录
 
 | 项目 | 状态 |
 | --- | --- |
-| GitHub 仓库与 Pages | 待线上验证 |
-| Render 健康检查 | 待线上验证 |
-| 筛选、分析、下载端到端 | 待线上验证 |
-| 独立模拟数据与私有隔离 | 本地检查通过；待线上验证 |
+| GitHub 仓库与 Pages | 2026-10-03 已上线，HTTPS 页面正常 |
+| Render 健康检查 | 已通过，公开独立模拟模式；中文字体已部署 |
+| 筛选、分析、下载端到端 | 已通过；G01 筛选 2,000 条，控制工况后分组 175 条；分组、快照、下载 CSV 一致；按参数重跑结果一致 |
+| 图件与报告 | PNG 中文正常；PDF、关系 CSV、统计 CSV、HTML 报告、实验 ZIP 下载正常；ZIP 完整性检查通过 |
+| 独立模拟数据与私有隔离 | 本地与线上检查通过，唯一公开数据集 10,000 条，上传请求返回 403 |
+
+## 两条发布路径与更新顺序
+
+```mermaid
+flowchart LR
+  A[本地源码与发布检查] --> B[GitHub main]
+  B --> C[docs 静态构建]
+  C --> D[GitHub Pages 网页]
+  B --> E[Render 手动部署]
+  E --> F[FastAPI 分析服务]
+  D -->|HTTPS 请求| F
+  F --> G[统计结果与图件报告]
+```
+
+后端接口有兼容性改动时，先上线后端并确认健康检查，再发布调用新接口的网页。部署失败时可在 Render 查看构建和运行日志；Pages 状态在 GitHub Actions 的 `pages build and deployment` 查看。网页可通过恢复上一版 `docs/` 并推送回滚；后端可在 Render 的旧部署记录选择回滚，或使用 **Deploy a specific commit** 部署已验证版本。新代码先运行本地检查，再上线；每次发布后重新验收筛选、分析与下载。
+
+参考：[GitHub Pages 发布来源](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)、[Render Web Service](https://render.com/docs/web-services)、[Render 免费实例限制](https://render.com/docs/free)。
