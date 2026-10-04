@@ -18,3 +18,5 @@ jobs:
       - run: PYTHONPATH=backend python -m pytest backend/tests -q
       - run: npm ci --no-audit --no-fund && npm run build
         working-directory: frontend
+      - run: npm run test:quick-demo
+        working-directory: frontend

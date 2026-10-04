@@ -17,6 +17,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'backend'))
 from app.privacy import PUBLIC_DEMO_SEED, PUBLIC_POLICY, write_independent_public_demo
+from build_quick_demo import build_payload, OUTPUT as QUICK_BUNDLE
 
 
 def digest(path: Path) -> str:
@@ -60,6 +61,8 @@ def main() -> None:
             or not frame.data_status.eq('完全独立模拟示例；非真实生产记录').all()
             or not frame.source_file.eq('独立模拟示例.csv').all()):
         raise SystemExit('公开 CSV 的数量、类别或来源标记无效')
+    if QUICK_BUNDLE.relative_to(ROOT) not in files or json.loads(QUICK_BUNDLE.read_text(encoding='utf-8')) != build_payload():
+        raise SystemExit('快速示例与公开独立模拟数据不一致，停止发布')
 
     # If the original confidential data exists on this machine, also check
     # every tracked text file for known direct identifiers without logging them.
@@ -99,7 +102,7 @@ def main() -> None:
             if error.code != 403:
                 raise SystemExit('线上上传隔离状态异常') from error
 
-    print(json.dumps({'release': PUBLIC_POLICY['version'], 'rows': len(frame), 'grades': 5,
+    print(json.dumps({'release': PUBLIC_POLICY['version'], 'rows': len(frame), 'quick_demo_rows': 1000, 'grades': 5,
                       'tracked_files': len(files), 'private_identifier_scan': checked_private,
                       'remote_checked': bool(args.url)}, ensure_ascii=False))
 
