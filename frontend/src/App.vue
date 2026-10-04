@@ -7,7 +7,8 @@ import AnalysisLab from './components/AnalysisLab.vue'
 import ProcessOverview from './components/ProcessOverview.vue'
 import { api, get, fmt, htmlEscape, downloadScope } from './api'
 
-const datasets=ref([]),dataset=ref(null),schema=ref({}),q=ref(null),selected=ref(null),view=ref('process'),uploadOpen=ref(false),loading=ref(false),error=ref(''),selecting=ref(false)
+const datasets=ref([]),dataset=ref(null),schema=ref({}),q=ref(null),selected=ref(null),view=ref('process'),uploadOpen=ref(false),loading=ref(true),error=ref(''),selecting=ref(false)
+const reconnecting=ref(false)
 const publicMode=ref(true)
 function navigate(target){view.value=target;window.scrollTo({top:0,behavior:'instant'})}
 const isIndependentSimulation=source=>source?.source_kind==='simulated'&&source?.release?.data_origin==='independent_simulation'
@@ -78,9 +79,21 @@ async function demo(){
 }
 async function imported(meta){uploadOpen.value=false;view.value='workbench';datasets.value=await get('/datasets');await selectDataset(meta.id)}
 async function exportRows(){try{await downloadScope(dataset.value.id,activeFilters.value)}catch(e){error.value=e.message}}
-onMounted(async()=>{
+async function initialize(){
+ loading.value=true;error.value='';reconnecting.value=false
  try{
-  const result=await Promise.all([get('/schema'),get('/datasets'),get('/health')]);schema.value=result[0];datasets.value=result[1];publicMode.value=result[2].mode==='public_demo'
+  let result
+  for(let attempt=0;attempt<3;attempt++){
+   try{
+    result=await Promise.all(['/schema','/datasets','/health'].map(path=>get(path,{timeoutMs:90000})))
+    break
+   }catch(e){
+    if(attempt===2||!(e.retryable||[502,503,504].includes(e.status)))throw e
+    reconnecting.value=true
+    await new Promise(resolve=>setTimeout(resolve,1500*(attempt+1)))
+   }
+  }
+  schema.value=result[0];datasets.value=result[1];publicMode.value=result[2].mode==='public_demo'
   resetDraft()
   if(datasets.value.length){
    const preferred=!publicMode.value&&datasets.value.find(d=>d.selection?.kind==='top_five_original')
@@ -88,7 +101,9 @@ onMounted(async()=>{
   }
   else await demo()
  }catch(e){error.value=e.message}
-})
+ finally{loading.value=false;reconnecting.value=false}
+}
+onMounted(initialize)
 
 const axis={axisLine:{lineStyle:{color:'#cdd3c1'}},axisLabel:{color:'#707a62',fontSize:12},splitLine:{lineStyle:{color:'#edf0e5'}}}
 const base={animation:false,textStyle:{fontFamily:'system-ui',color:'#4b593d'},tooltip:{confine:true},grid:{left:50,right:16,top:35,bottom:46}}
@@ -124,12 +139,12 @@ const selectedLabel=computed(()=>selected.value?.slab_id||`记录 ${selected.val
 <template>
 <div class="app-shell">
  <header class="topbar"><div class="brand"><div class="brand-mark"><i></i><i></i><i></i></div><div><strong>SLAB LAB</strong><span>工业工艺分析工作台</span></div></div><nav aria-label="主导航"><button :class="{active:view==='process'}" :aria-current="view==='process'?'page':undefined" @click="navigate('process')">工艺概览</button><button :class="{active:view==='workbench'}" :aria-current="view==='workbench'?'page':undefined" @click="navigate('workbench')">数据工作台</button><button :class="{active:view==='analysis'}" :aria-current="view==='analysis'?'page':undefined" @click="navigate('analysis')">分析实验</button></nav><div v-if="!publicMode" class="top-actions"><button class="primary" @click="uploadOpen=true">导入数据</button></div></header>
- <div v-if="error" class="global-error" role="alert">{{error}}<button @click="error=''" aria-label="关闭错误信息">×</button></div>
+ <div v-if="error&&q" class="global-error" role="alert">{{error}}<button @click="error=''" aria-label="关闭错误信息">×</button></div>
  <main class="main-area workspace-page" :aria-busy="loading">
   <ProcessOverview v-if="view==='process'" @workbench="navigate('workbench')" @analysis="navigate('analysis')"/>
   <div v-show="view!=='process'">
-  <div class="workspace-heading"><div><h1>{{view==='workbench'?'粗轧温降分析':'相近工况下的温降比较'}}</h1></div><span v-if="loading" class="loading-label">正在更新数据…</span></div>
-  <section class="source-strip" aria-label="数据来源">
+  <div class="workspace-heading"><div><h1>{{view==='workbench'?'粗轧温降分析':'相近工况下的温降比较'}}</h1></div><span v-if="loading&&q" class="loading-label">正在更新数据…</span></div>
+  <section v-if="dataset" class="source-strip" aria-label="数据来源">
    <label class="dataset-select">当前数据集<select :value="dataset?.id" @change="selectDataset($event.target.value)" aria-label="当前数据集"><option v-for="d in datasets" :key="d.id" :value="d.id">{{d.name}} {{isIndependentSimulation(d)?'[完全独立模拟]':d.source_kind==='simulated'?'[模拟]':''}}</option></select></label>
    <div class="dataset-meta"><span class="source-badge" :class="dataset?.source_kind">{{sourceLabel(dataset)}}</span><span>{{fmt(dataset?.rows,0)}} 条源记录</span></div>
    <div class="source-actions"><button v-if="!publicMode" class="text-button" @click="demo" :disabled="loading">模拟示例</button><details v-if="dataset" class="quality-summary"><summary>数据质量与字段</summary><div class="quality-popover"><p v-if="dataset.source_kind==='real'" data-testid="real-data-notice">真实生产数据，仅供本地分析。{{dataset.selection?.kind==='top_five_original'?'仅保留数量最多的五个钢种，数值与生产时间未修改。':'数值与来源保留原样。'}}</p><p v-if="isIndependentSimulation(dataset)">完全独立模拟示例：该数据集由独立设定的模拟参数生成，未从生产数据、钢种编码、记录编号、生产时间或统计特征重建。</p><p v-else-if="dataset.source_kind==='sanitized'">G01—G05 为匿名钢种，编号、日期、样本量及数值已重建；下载内容同为合成数据。</p><p>异常记录 {{fmt(dataset.quality.invalid_rows,0)}} 条，原值保留。</p><p v-if="!dataset.available.includes('slab_id')">未提供板坯编号，使用原始行号和稳定记录标识。</p><p v-if="dataset.quality.duplicate_slab_ids">重复板坯编号 {{dataset.quality.duplicate_slab_ids}} 条，按记录分别保留。</p><p v-for="w in dataset.warnings" :key="w">{{w}}</p><div v-for="(n,k) in dataset.quality.missing" :key="k" class="quality-field"><span>{{schema[k]?.label}}</span><span>{{n===dataset.rows?'未提供':`缺失 ${n}`}}</span></div><p v-for="(p,i) in dataset.provenance" :key="i">{{p.file}} · {{p.sheet}} · {{p.rows}} 行 · {{p.role}}</p><pre v-if="dataset.joins.length">{{JSON.stringify(dataset.joins,null,2)}}</pre></div></details></div>
@@ -165,7 +180,11 @@ const selectedLabel=computed(()=>selected.value?.slab_id||`记录 ${selected.val
    </div>
    <AnalysisLab v-show="view==='analysis'" :dataset="dataset" :filters="activeFilters" :scope="q.scope" :schema="schema" :pending="loading" :active="view==='analysis'" @locate-record="locateAnalysisRecord"/>
   </template>
-  <div v-else class="initial-loading">{{loading?'正在准备数据…':'选择数据集或导入生产文件开始分析。'}}</div>
+  <section v-else class="initial-loading" data-testid="initial-state" :role="error?'alert':'status'" aria-live="polite">
+   <template v-if="loading"><progress aria-label="数据加载进度"></progress><h2>{{reconnecting?'正在重新连接分析服务…':dataset?'正在加载板坯记录…':'正在连接分析服务…'}}</h2><p>首次访问可能稍慢，数据加载后会自动显示。</p></template>
+   <template v-else-if="error"><h2>数据暂时未能加载</h2><p>{{error}}</p><button class="primary" @click="initialize">重新加载数据</button></template>
+   <template v-else><h2>尚未选择数据集</h2><button class="primary" @click="initialize">加载示例数据</button></template>
+  </section>
   </div>
  </main>
  <ImportModal v-if="uploadOpen" :schema="schema" @close="uploadOpen=false" @imported="imported"/>

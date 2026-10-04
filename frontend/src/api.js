@@ -16,23 +16,34 @@ export function apiUrl(path = '') {
   return `${apiRoot}${suffix}`
 }
 
-export async function api(path, body, method = 'POST') {
+export async function api(path, body, method = 'POST', options = {}) {
   const isForm = body instanceof FormData
-  const res = await fetch(apiUrl(path), {
-    method, headers: body && !isForm ? { 'Content-Type': 'application/json' } : {},
-    body: body ? (isForm ? body : JSON.stringify(body)) : undefined
-  })
-  if (!res.ok) {
-    let msg = `请求失败 (${res.status})`
-    try {
-      const data = await res.json()
-      msg = Array.isArray(data.detail) ? data.detail.map(x => x.msg).join('；') : data.detail || msg
-    } catch { /* server may return plain text */ }
-    throw new Error(msg)
+  const controller = options.timeoutMs ? new AbortController() : null
+  const timeout = controller ? setTimeout(() => controller.abort(), options.timeoutMs) : null
+  try {
+    const res = await fetch(apiUrl(path), {
+      method, headers: body && !isForm ? { 'Content-Type': 'application/json' } : {},
+      body: body ? (isForm ? body : JSON.stringify(body)) : undefined,
+      ...(controller ? {signal: controller.signal} : {})
+    })
+    if (!res.ok) {
+      let msg = `请求失败 (${res.status})`
+      try {
+        const data = await res.json()
+        msg = Array.isArray(data.detail) ? data.detail.map(x => x.msg).join('；') : data.detail || msg
+      } catch { /* server may return plain text */ }
+      throw Object.assign(new Error(msg), {status: res.status})
+    }
+    return await res.json()
+  } catch (error) {
+    if (error.name === 'AbortError') throw new Error('分析服务响应超时，请重试。')
+    if (error instanceof TypeError) throw Object.assign(new Error('无法连接分析服务，请检查网络后重试。'), {retryable: true})
+    throw error
+  } finally {
+    if (timeout !== null) clearTimeout(timeout)
   }
-  return res.json()
 }
-export const get = path => api(path, null, 'GET')
+export const get = (path, options) => api(path, null, 'GET', options)
 export const fmt = (value, digits = 1) => value == null || !Number.isFinite(Number(value)) ? '—' : Number(value).toLocaleString('zh-CN', { maximumFractionDigits: digits })
 export const htmlEscape = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 export async function downloadScope(dataset, filters) {
