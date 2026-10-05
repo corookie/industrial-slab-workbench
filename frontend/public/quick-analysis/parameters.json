@@ -1,0 +1,36 @@
+{
+  "filters": {
+    "grades": [],
+    "ranges": {},
+    "date_start": null,
+    "date_end": null,
+    "exclude_invalid": true
+  },
+  "steel_grade": "G01",
+  "controls": {
+    "exit_temp": [
+      1170.0,
+      1230.0
+    ],
+    "process_time": [
+      140.0,
+      220.0
+    ]
+  },
+  "variable": "rough_thickness",
+  "bins": [
+    24.0,
+    32.0,
+    36.0,
+    44.0
+  ],
+  "error_bar": "sd",
+  "relationship_fields": [
+    "rough_thickness",
+    "process_time",
+    "exit_temp",
+    "furnace_time",
+    "width"
+  ],
+  "effect_step": 1.0
+}

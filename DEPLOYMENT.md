@@ -21,7 +21,9 @@ python3 scripts/export_pages.py --api-base https://industrial-slab-workbench-api
 .venv/bin/python scripts/verify_public_release.py
 ```
 
-`export_pages.py` 将前端构建为 `docs/index.html` 与 `docs/assets/`，网页根路径是 `/industrial-slab-workbench/`，API 地址是 Render 的 HTTPS 域名。它不会删除本机 `docs/` 中的笔记或截图；这些内容被 Git 忽略。`verify_public_release.py` 比较公开 CSV 与固定模拟生成器的字节哈希，并检查 Git 暂存文件和已知源标识。
+`export_pages.py` 将前端构建为 `docs/index.html`、`docs/assets/` 和 `docs/quick-analysis/`。最后一个目录保存 1,000 条快速示例的预计算图件和报告，因此分析页无需等 Render 才能显示默认结果。网页根路径是 `/industrial-slab-workbench/`，API 地址是 Render 的 HTTPS 域名。脚本不会删除本机 `docs/` 中的笔记或截图；这些内容被 Git 忽略。`verify_public_release.py` 比较公开 CSV、内置数据、预计算输入和下载文件的指纹，并检查 Git 暂存文件和已知源标识。
+
+修改模拟数据、默认实验参数或后端分析实现后，先执行 `.venv/bin/python scripts/build_quick_analysis.py`，再构建发布。默认实验参数与图件绑定；后台就绪只增加完整数据集选项，不会自动切换数据集或替换正在展示的结果。
 
 ## 2. 推送 GitHub
 

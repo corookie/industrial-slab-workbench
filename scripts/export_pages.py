@@ -44,6 +44,10 @@ def main() -> None:
     if assets.exists():
         shutil.rmtree(assets)
     shutil.copytree(built / "assets", assets)
+    analysis_assets = SITE / 'quick-analysis'
+    if analysis_assets.exists():
+        shutil.rmtree(analysis_assets)
+    shutil.copytree(built / 'quick-analysis', analysis_assets)
     shutil.copy2(built / "index.html", SITE / "index.html")
     favicon = built / "favicon.svg"
     if favicon.exists():

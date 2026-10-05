@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'backend'))
 from app.privacy import PUBLIC_DEMO_SEED, PUBLIC_POLICY, write_independent_public_demo
 from build_quick_demo import build_payload, OUTPUT as QUICK_BUNDLE
+from check_quick_analysis import check_bundle, BUNDLE as QUICK_ANALYSIS, ASSETS as ANALYSIS_ASSETS
 
 
 def digest(path: Path) -> str:
@@ -63,6 +64,14 @@ def main() -> None:
         raise SystemExit('公开 CSV 的数量、类别或来源标记无效')
     if QUICK_BUNDLE.relative_to(ROOT) not in files or json.loads(QUICK_BUNDLE.read_text(encoding='utf-8')) != build_payload():
         raise SystemExit('快速示例与公开独立模拟数据不一致，停止发布')
+    analysis = check_bundle()
+    if QUICK_ANALYSIS.relative_to(ROOT) not in files:
+        raise SystemExit('内置分析结果尚未暂存')
+    for name, sha in analysis['files_sha256'].items():
+        asset = ANALYSIS_ASSETS / name
+        published = ROOT / 'docs/quick-analysis' / name
+        if asset.relative_to(ROOT) not in files or published.relative_to(ROOT) not in files or digest(published) != sha:
+            raise SystemExit('内置分析发布文件缺失或版本不一致')
 
     # If the original confidential data exists on this machine, also check
     # every tracked text file for known direct identifiers without logging them.

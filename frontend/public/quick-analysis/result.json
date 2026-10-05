@@ -1,0 +1,423 @@
+{
+  "id": "7072403d3687404999071613c8a75422",
+  "dataset_id": "quick-demo-v1",
+  "dataset_name": "快速独立模拟示例 · 1,000 条",
+  "source_kind": "simulated",
+  "created_at": "2026-10-05T04:07:56.068726+00:00",
+  "dataset_sha256": "8a87bcc0e173e9c0e0d6e9666a2373043d466486e37919d31c8853d886181f92",
+  "parameter_sha256": "60f3a1a2b2dee1555c08c7299d506bf88d1bf77df4d26e8bbc01f0fdeca4862c",
+  "code_sha256": "d52c13dad0f193acf0b4616f08bddb6d39fed6245b7ab4c4705ba6a153ae00fc",
+  "parameters": {
+    "filters": {
+      "grades": [],
+      "ranges": {},
+      "date_start": null,
+      "date_end": null,
+      "exclude_invalid": true
+    },
+    "steel_grade": "G01",
+    "controls": {
+      "exit_temp": [
+        1170.0,
+        1230.0
+      ],
+      "process_time": [
+        140.0,
+        220.0
+      ]
+    },
+    "variable": "rough_thickness",
+    "bins": [
+      24.0,
+      32.0,
+      36.0,
+      44.0
+    ],
+    "error_bar": "sd",
+    "relationship_fields": [
+      "rough_thickness",
+      "process_time",
+      "exit_temp",
+      "furnace_time",
+      "width"
+    ],
+    "effect_step": 1.0
+  },
+  "scope_sha256": "e4925b4d87f88af141b0ebec73d5425c34e13c022cc37f85e0ff6667466814a6",
+  "counts": {
+    "source": 1000,
+    "current_scope": 1000,
+    "controlled": 182,
+    "missing_analysis_values": 0,
+    "outside_bins": 0,
+    "analyzed": 182
+  },
+  "groups": [
+    {
+      "index": 0,
+      "label": "[24, 32)",
+      "lower": 24.0,
+      "upper": 32.0,
+      "n": 49,
+      "mean": 117.07897959183673,
+      "sd": 9.111051495504867,
+      "se": 1.3015787850721239,
+      "median": 116.69,
+      "ci95_low": 114.46198004678439,
+      "ci95_high": 119.69597913688906,
+      "ci95_half": 2.616999545052332,
+      "variable_mean": 29.95224489795918,
+      "controls": {
+        "exit_temp": {
+          "n": 49,
+          "mean": 1200.8520408163265,
+          "min": 1176.74,
+          "max": 1218.2
+        },
+        "process_time": {
+          "n": 49,
+          "mean": 169.73714285714289,
+          "min": 142.97,
+          "max": 205.86
+        },
+        "furnace_time": {
+          "n": 49,
+          "mean": 183.20795918367344,
+          "min": 135.6,
+          "max": 228.88
+        },
+        "width": {
+          "n": 49,
+          "mean": 1302.0408163265306,
+          "min": 1100.0,
+          "max": 1600.0
+        },
+        "thickness": {
+          "n": 49,
+          "mean": 235.10204081632654,
+          "min": 210.0,
+          "max": 280.0
+        },
+        "charge_temp": {
+          "n": 49,
+          "mean": 386.5832653061225,
+          "min": 218.93,
+          "max": 583.86
+        }
+      }
+    },
+    {
+      "index": 1,
+      "label": "[32, 36)",
+      "lower": 32.0,
+      "upper": 36.0,
+      "n": 87,
+      "mean": 119.27229885057471,
+      "sd": 8.507904491699609,
+      "se": 0.9121431050753928,
+      "median": 119.11,
+      "ci95_low": 117.45901837101027,
+      "ci95_high": 121.08557933013915,
+      "ci95_half": 1.8132804795644462,
+      "variable_mean": 34.33563218390805,
+      "controls": {
+        "exit_temp": {
+          "n": 87,
+          "mean": 1198.2721839080461,
+          "min": 1170.1,
+          "max": 1228.93
+        },
+        "process_time": {
+          "n": 87,
+          "mean": 172.09724137931033,
+          "min": 144.48,
+          "max": 202.74
+        },
+        "furnace_time": {
+          "n": 87,
+          "mean": 180.79310344827587,
+          "min": 127.03,
+          "max": 222.16
+        },
+        "width": {
+          "n": 87,
+          "mean": 1294.8275862068965,
+          "min": 1100.0,
+          "max": 1600.0
+        },
+        "thickness": {
+          "n": 87,
+          "mean": 239.08045977011494,
+          "min": 210.0,
+          "max": 280.0
+        },
+        "charge_temp": {
+          "n": 87,
+          "mean": 399.28367816091964,
+          "min": 180.0,
+          "max": 533.1
+        }
+      }
+    },
+    {
+      "index": 2,
+      "label": "[36, 44]",
+      "lower": 36.0,
+      "upper": 44.0,
+      "n": 46,
+      "mean": 118.12195652173914,
+      "sd": 9.584800379203456,
+      "se": 1.4132017172639573,
+      "median": 118.22999999999999,
+      "ci95_low": 115.27562215382557,
+      "ci95_high": 120.9682908896527,
+      "ci95_half": 2.8463343679135678,
+      "variable_mean": 37.71413043478261,
+      "controls": {
+        "exit_temp": {
+          "n": 46,
+          "mean": 1199.7028260869565,
+          "min": 1170.89,
+          "max": 1226.5
+        },
+        "process_time": {
+          "n": 46,
+          "mean": 169.1245652173913,
+          "min": 140.33,
+          "max": 208.82
+        },
+        "furnace_time": {
+          "n": 46,
+          "mean": 183.17347826086956,
+          "min": 133.57,
+          "max": 217.03
+        },
+        "width": {
+          "n": 46,
+          "mean": 1350.0,
+          "min": 1100.0,
+          "max": 1600.0
+        },
+        "thickness": {
+          "n": 46,
+          "mean": 240.2173913043478,
+          "min": 210.0,
+          "max": 280.0
+        },
+        "charge_temp": {
+          "n": 46,
+          "mean": 398.9995652173913,
+          "min": 259.21,
+          "max": 568.94
+        }
+      }
+    }
+  ],
+  "differences": [
+    {
+      "a": "[24, 32)",
+      "b": "[32, 36)",
+      "n_a": 49,
+      "n_b": 87,
+      "mean_difference_b_minus_a": 2.1933192587379864
+    },
+    {
+      "a": "[24, 32)",
+      "b": "[36, 44]",
+      "n_a": 49,
+      "n_b": 46,
+      "mean_difference_b_minus_a": 1.0429769299024088
+    },
+    {
+      "a": "[32, 36)",
+      "b": "[36, 44]",
+      "n_a": 87,
+      "n_b": 46,
+      "mean_difference_b_minus_a": -1.1503423288355776
+    }
+  ],
+  "relationships": {
+    "method": "含截距普通最小二乘；HC3 异方差稳健协方差；95% 渐近正态区间",
+    "limitation": "线性系数表示本次样本范围内的平均统计关联，不是因果效应；HC3 不校正连续生产记录的时间相关性，区间依赖样本独立假设，各变量区间未作多重比较校正；斜率是观测范围内的线性近似。",
+    "fields": [
+      "rough_thickness",
+      "process_time",
+      "exit_temp",
+      "furnace_time",
+      "width"
+    ],
+    "fitted_fields": [
+      "rough_thickness",
+      "process_time",
+      "exit_temp",
+      "furnace_time",
+      "width"
+    ],
+    "n": 182,
+    "excluded_missing": 0,
+    "scope_n": 182,
+    "rows": [
+      {
+        "field": "rough_thickness",
+        "label": "粗轧厚度",
+        "unit": "mm",
+        "step": 1.0,
+        "n": 182,
+        "range_min": 25.1,
+        "range_max": 42.51,
+        "unadjusted_change": 0.3587971762715305,
+        "adjusted_change": 0.32472517169685866,
+        "ci95_low": -0.036196990733074086,
+        "ci95_high": 0.6856473341267915,
+        "slope_per_unit": 0.32472517169685866,
+        "vif": 1.0058724105440706,
+        "status": "uncertain",
+        "reason": "区间跨越 0，变化方向不明确",
+        "interpretation": "粗轧厚度每增加 1 mm，拟合温降平均增加 0.32 °C"
+      },
+      {
+        "field": "process_time",
+        "label": "粗轧过程时间",
+        "unit": "s",
+        "step": 10.0,
+        "n": 182,
+        "range_min": 140.33,
+        "range_max": 208.82,
+        "unadjusted_change": 2.1878090723531325,
+        "adjusted_change": 2.1413626154968908,
+        "ci95_low": 1.2210001344356827,
+        "ci95_high": 3.061725096558099,
+        "slope_per_unit": 0.2141362615496891,
+        "vif": 1.0275591756332705,
+        "status": "estimated",
+        "reason": "",
+        "interpretation": "粗轧过程时间每增加 10 s，拟合温降平均增加 2.14 °C"
+      },
+      {
+        "field": "exit_temp",
+        "label": "出炉温度",
+        "unit": "°C",
+        "step": 10.0,
+        "n": 182,
+        "range_min": 1170.1,
+        "range_max": 1228.93,
+        "unadjusted_change": 1.9915251407525316,
+        "adjusted_change": 1.8155312798069334,
+        "ci95_low": 0.8504223721710489,
+        "ci95_high": 2.7806401874428177,
+        "slope_per_unit": 0.18155312798069334,
+        "vif": 1.0111561061339502,
+        "status": "estimated",
+        "reason": "",
+        "interpretation": "出炉温度每增加 10 °C，拟合温降平均增加 1.82 °C"
+      },
+      {
+        "field": "furnace_time",
+        "label": "在炉时间",
+        "unit": "min",
+        "step": 10.0,
+        "n": 182,
+        "range_min": 127.03,
+        "range_max": 228.88,
+        "unadjusted_change": -0.6539256979041406,
+        "adjusted_change": -0.8888379745617319,
+        "ci95_low": -1.5618260495957985,
+        "ci95_high": -0.2158498995276652,
+        "slope_per_unit": -0.08888379745617318,
+        "vif": 1.013843675558604,
+        "status": "estimated",
+        "reason": "",
+        "interpretation": "在炉时间每增加 10 min，拟合温降平均减少 0.89 °C"
+      },
+      {
+        "field": "width",
+        "label": "板坯宽度",
+        "unit": "mm",
+        "step": 100.0,
+        "n": 182,
+        "range_min": 1100.0,
+        "range_max": 1600.0,
+        "unadjusted_change": 0.09674993346260581,
+        "adjusted_change": 0.15430104867241715,
+        "ci95_low": -0.5445287697231637,
+        "ci95_high": 0.8531308670679979,
+        "slope_per_unit": 0.0015430104867241714,
+        "vif": 1.0096960764404974,
+        "status": "uncertain",
+        "reason": "区间跨越 0，变化方向不明确",
+        "interpretation": "板坯宽度每增加 100 mm，拟合温降平均增加 0.15 °C"
+      }
+    ],
+    "r2_in_sample": 0.23172789867517718,
+    "residual_sd": 7.955531057696412,
+    "influential_count": 10,
+    "intercept": -132.79138843678982,
+    "warnings": [
+      "有 10 条记录的 Cook 距离超过 4/n 参考线，系数可能受极端观测影响；记录未自动剔除"
+    ],
+    "explanation": "粗轧厚度每增加 1 mm，拟合温降平均增加 0.32 °C；区间跨越 0，变化方向不明确，暂不作明确方向结论。",
+    "ci_label": "校正系数的 95% HC3 渐近正态区间（样本独立假设）",
+    "temperature_identity_check": {
+      "checked": 182,
+      "mismatch_gt_3c": 0
+    },
+    "samples_sha256": "3c79f877f3f7693610ad1868d54fb5bc5790444e48a6f2d67fc564242f164369"
+  },
+  "warnings": [
+    "完全独立模拟示例；使用预设参数生成，未使用任何真实生产记录、汇总统计或脱敏副本；仅用于展示分析流程，不代表工业结论。"
+  ],
+  "conditions": [
+    "钢种：G01",
+    "控制条件 出炉温度：1170.0—1230.0 °C",
+    "控制条件 粗轧过程时间：140.0—220.0 s",
+    "异常记录：排除"
+  ],
+  "error_bar_label": "误差条：组内样本标准差（ddof=1）",
+  "limitation": "结果仅描述当前钢种、筛选条件与分组口径下的关联和均值差异，不能直接推断物理因果；区间筛选不保证各组工况完全一致。",
+  "interval_policy": "左闭右开；最后一个区间包含右端点；缺失值及区间外样本不参与分组",
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "matplotlib": "3.10.3",
+    "scipy": "1.15.3"
+  },
+  "provenance": [],
+  "release": {
+    "version": "independent-synthetic-v1",
+    "source_kind": "simulated",
+    "data_origin": "independent_simulation",
+    "grade_labels": "G01—G05 为虚构演示类别，不对应真实钢种、排名、产量或占比",
+    "records_per_grade": 200,
+    "counts": "每类 200 条，共 1,000 条；不代表真实产量或比例",
+    "values": "使用代码中公开声明的固定参数、随机种子和人为设定的变量关系生成；未读取上传文件或源数据统计",
+    "time": "统一虚构演示时间，随机生成；不保留生产时间或记录间隔",
+    "traceability": "不包含真实板坯编号、钢种、炉号、文件名、上传路径、源行、源数据指纹或映射",
+    "notice": "完全独立模拟示例；使用预设参数生成，未使用任何真实生产记录、汇总统计或脱敏副本；仅用于展示分析流程，不代表工业结论。",
+    "limitation": "这是完全独立的模拟数据。数值关系仅用于演示分析方法，不能用于推断真实工业过程。",
+    "seed": 26180,
+    "csv_sha256": "6e951a8f4ce24d3d55a72648fba621318edd164f7d20cb6084ba3a5cb20634d0",
+    "subset": "每类等距选取 200 条独立模拟记录"
+  },
+  "explanation": "当前工况纳入 182 条记录。[32, 36) mm 组平均温降最高，为 119.27 °C；[24, 32) mm 组最低，为 117.08 °C。均值最大差为 2.19 °C。该差值为描述性统计，未进行因果估计或显著性检验。",
+  "samples_sha256": "3c79f877f3f7693610ad1868d54fb5bc5790444e48a6f2d67fc564242f164369",
+  "artifacts": {
+    "figure.png": "quick-analysis/figure.png",
+    "figure.svg": "quick-analysis/figure.svg",
+    "figure.pdf": "quick-analysis/figure.pdf",
+    "relationship.png": "quick-analysis/relationship.png",
+    "relationship.svg": "quick-analysis/relationship.svg",
+    "relationship.pdf": "quick-analysis/relationship.pdf",
+    "relationships.csv": "quick-analysis/relationships.csv",
+    "relationship_samples.csv": "quick-analysis/relationship_samples.csv",
+    "report.html": "quick-analysis/report.html",
+    "report.md": "quick-analysis/report.md",
+    "statistics.csv": "quick-analysis/statistics.csv",
+    "samples.csv": "quick-analysis/samples.csv",
+    "parameters.json": "quick-analysis/parameters.json",
+    "result.json": "quick-analysis/result.json",
+    "bundle.zip": "quick-analysis/bundle.zip"
+  },
+  "precomputed": true,
+  "quick_dataset_sha256": "d59b9a5a62a1772eedce648af128b272cdf2bddd5f5ff4c62c8a8e1a77cb1186"
+}
